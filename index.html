@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ff00cc">
-  <title>★ Всем писс, мои подписчики ★</title>
+  <meta name="theme-color" content="#000000">
+  <title>Всем писс, мои подписчики</title>
   <meta name="description" content="Всем писс, мои подписчики — личная страничка со ссылкой на Telegram-канал.">
 
   <!-- Open Graph / Telegram / VK preview -->
@@ -19,8 +19,8 @@
   <meta name="twitter:description" content="Личная страничка со ссылкой на Telegram-канал.">
   <meta name="twitter:image" content="photo.jpeg">
 
-  <!-- Inline SVG favicon (hot-pink star to match the Y2K vibe) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff00cc'/%3E%3Cstop offset='100%25' stop-color='%2300ffe7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 4l7 18 19 2-14 13 4 19-16-10-16 10 4-19L6 24l19-2z' fill='url(%23g)' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <!-- Inline SVG favicon (no extra request) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23ffc1d6'/%3E%3Cstop offset='100%25' stop-color='%23ff6fa3'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Cpath d='M32 20c4 0 8 3 8 8 0 7-8 14-8 14s-8-7-8-14c0-5 4-8 8-8z' fill='%23fff' opacity='0.9'/%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
 
@@ -29,102 +29,32 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Glitch&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --accent-a: #ff7aa2;
+      --accent-b: #8ad4ff;
+      --ink: #ffffff;
+      --ink-dim: rgba(255,255,255,0.7);
+    }
 
     html, body {
       height: 100%;
       width: 100%;
-      font-family: 'Comic Sans MS', 'Chalkboard SE', system-ui, sans-serif;
-      color: #fff;
-      background: #1a0033;
       overflow: hidden;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #060608;
+      color: var(--ink);
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Animated diagonal rainbow stripes — the unmistakable Y2K background */
-    .bg-stripes {
-      position: fixed; inset: 0; z-index: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        #ff00cc 0 20px,
-        #3333ff 20px 40px,
-        #00ffe7 40px 60px
-      );
-      background-size: 600% 600%;
-      animation: shift 8s linear infinite;
-    }
-
-    @keyframes shift {
-      0%   { background-position: 0 0; }
-      100% { background-position: 100% 100%; }
-    }
-
-    /* Ridged silver frame around everything, inside the browser viewport */
-    .frame {
+    /* ── Background photo with slow zoom ── */
+    .bg {
       position: fixed;
-      inset: 12px;
-      z-index: 1;
-      border: 4px ridge silver;
-      border-radius: 14px;
-      background:
-        radial-gradient(circle at 30% 10%, rgba(255,255,255,0.25), transparent 60%),
-        linear-gradient(135deg, rgba(0,0,0,0.55), rgba(60,0,90,0.55));
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* Marquee strips top + bottom */
-    .marquee {
-      flex: 0 0 auto;
-      overflow: hidden;
-      white-space: nowrap;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-      color: #ffff66;
-      text-shadow: 2px 2px 0 #ff00cc;
-      padding: 6px 0;
-      border-top: 2px solid #ff00cc;
-      border-bottom: 2px solid #00ffe7;
-      background: rgba(0,0,0,0.5);
-    }
-    .marquee span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll 18s linear infinite;
-    }
-    @keyframes scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    #particles {
-      position: absolute;
       inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Center content area */
-    main.center {
-      position: relative;
-      z-index: 2;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(12px, 2vw, 20px);
-      padding: 20px;
-      min-height: 0;
-    }
-
-    .portrait {
-      width: clamp(120px, 18vw, 180px);
-      height: clamp(120px, 18vw, 180px);
-      border-radius: 50%;
+      z-index: 0;
       background: url('photo.jpeg') center/cover no-repeat;
       background-image: -webkit-image-set(
         url('photo.webp') type('image/webp') 1x,
@@ -134,292 +64,490 @@
         url('photo.webp') type('image/webp') 1x,
         url('photo.jpeg') type('image/jpeg') 1x
       );
-      background-position: center;
-      background-size: cover;
-      border: 6px double #ff00cc;
-      box-shadow: 0 0 40px #ff00cc, 0 0 80px rgba(255,0,204,0.4);
-      animation: bob 3s ease-in-out infinite alternate;
-    }
-    @keyframes bob {
-      from { transform: translateY(-4px) rotate(-2deg); }
-      to   { transform: translateY( 4px) rotate( 2deg); }
+      filter: brightness(0.5) saturate(1.15) contrast(1.05);
+      transform: scale(1.08);
+      animation: slowZoom 28s ease-in-out infinite alternate;
+      will-change: transform;
     }
 
-    .stars {
-      color: #ffff66;
-      font-size: 22px;
-      letter-spacing: 8px;
-      text-shadow: 0 0 6px #fff, 0 0 12px #ff00cc;
-      animation: blink 1s steps(2) infinite;
-      text-align: center;
+    @keyframes slowZoom {
+      from { transform: scale(1.08) translate(0, 0); }
+      to   { transform: scale(1.15) translate(-0.8%, -1.2%); }
     }
-    @keyframes blink { 50% { opacity: 0.4; } }
+
+    /* Soft color wash so the photo doesn't feel muddy */
+    .wash {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(80% 60% at 25% 10%, rgba(255,122,162,0.16), transparent 60%),
+        radial-gradient(70% 50% at 90% 100%, rgba(138,212,255,0.14), transparent 55%),
+        radial-gradient(ellipse at center, transparent 10%, rgba(0,0,0,0.78) 100%);
+    }
+
+    /* Subtle film grain for depth */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.18;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* ── Content ── */
+    .center {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      min-height: 100vh;
+    }
+
+    /* Aurora-like glow behind the heading */
+    .halo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: min(90vw, 720px);
+      height: min(60vh, 420px);
+      transform: translate(-50%, -58%);
+      z-index: -1;
+      filter: blur(60px);
+      opacity: 0.55;
+      background:
+        radial-gradient(50% 50% at 30% 40%, rgba(255,122,162,0.55), transparent 70%),
+        radial-gradient(50% 50% at 70% 60%, rgba(138,212,255,0.45), transparent 70%);
+      animation: haloDrift 14s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes haloDrift {
+      from { transform: translate(-52%, -60%) scale(1); }
+      to   { transform: translate(-48%, -56%) scale(1.1); }
+    }
 
     .main-text {
-      font-family: 'Rubik Glitch', 'Impact', sans-serif;
-      font-size: clamp(32px, 7vw, 72px);
-      font-weight: 400;
-      line-height: 1;
-      text-align: center;
-      letter-spacing: 0.02em;
-      background: linear-gradient(
-        180deg,
-        #fff 0%,
-        #b4b4ff 40%,
-        #666  50%,
-        #fff  60%,
-        #ffaaff 100%
-      );
+      font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: clamp(2.6rem, 11vw, 6.5rem);
+      letter-spacing: 0.005em;
+      line-height: 1.02;
+      color: var(--ink);
+      background: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #ffd7e4 100%);
       -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(0,0,0,0.3);
-      filter: drop-shadow(3px 3px 0 #ff00cc) drop-shadow(-2px -2px 0 #00ffe7);
-    }
-    .main-text small {
-      display: block;
-      font-size: 0.45em;
-      margin-top: 6px;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 30px rgba(0,0,0,0.55));
+      text-shadow: 0 0 60px rgba(255,182,200,0.12);
     }
 
+    .main-text .line { display: block; }
+    .main-text .line:last-child {
+      font-size: 0.58em;
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      opacity: 0.88;
+      margin-top: 0.25em;
+    }
+
+    .main-text .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(24px);
+      filter: blur(6px);
+      animation: letterIn 0.7s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+
+    @keyframes letterIn {
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    .divider {
+      height: 1px;
+      width: 0%;
+      margin: 22px auto 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+      animation: lineExpand 1s cubic-bezier(.2,.7,.2,1) forwards;
+      animation-delay: 2s;
+      position: relative;
+    }
+    .divider::after {
+      content: "✦";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10px;
+      color: rgba(255,255,255,0.65);
+      background: rgba(6,6,8,0.6);
+      padding: 0 10px;
+      opacity: 0;
+      animation: starIn 0.4s ease forwards;
+      animation-delay: 2.6s;
+    }
+
+    @keyframes lineExpand { to { width: 62%; } }
+    @keyframes starIn     { to { opacity: 1; } }
+
+    /* Telegram CTA */
     .tg-btn {
+      position: relative;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 14px 32px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: clamp(10px, 2.4vw, 14px);
+      gap: 12px;
+      margin-top: 34px;
+      padding: 15px 34px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      color: #fff;
       text-decoration: none;
-      color: #000;
-      background: linear-gradient(180deg, #ffd5ec 0%, #ff69b4 40%, #cc3388 60%, #ff99cc 100%);
-      border: 3px outset #fff;
-      border-radius: 8px;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
+      font-size: clamp(0.9rem, 3.3vw, 1rem);
+      font-weight: 600;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+      backdrop-filter: blur(18px) saturate(1.1);
+      -webkit-backdrop-filter: blur(18px) saturate(1.1);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        0 10px 40px rgba(0,0,0,0.35);
+      transition: transform 0.25s cubic-bezier(.2,.7,.2,1),
+                  border-color 0.25s, box-shadow 0.25s, background 0.25s;
       cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: transform 0.1s;
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(.2,.7,.2,1) forwards;
+      animation-delay: 2.8s;
       touch-action: manipulation;
-    }
-    .tg-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
-    }
-    .tg-btn:hover {
-      background: linear-gradient(180deg, #ffe0f0 0%, #ff7ac0 40%, #e04aa0 60%, #ffb0dd 100%);
+      overflow: hidden;
     }
 
-    /* Retro neon visitor counter */
-    .hits {
-      font-family: 'Press Start 2P', monospace;
-      color: #00ff66;
-      font-size: 10px;
-      background: #000;
-      border: 2px solid #00ff66;
-      padding: 6px 10px;
-      letter-spacing: 0.08em;
-    }
-
-    /* Sparkle stars in the corners */
-    .sparkle {
+    .tg-btn::before {
+      content: "";
       position: absolute;
-      font-size: 18px;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(120deg, var(--accent-a), transparent 40%, var(--accent-b));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+              mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
       pointer-events: none;
-      animation: twinkle 2s infinite;
-      z-index: 2;
-    }
-    @keyframes twinkle {
-      0%, 100% { transform: scale(1)   rotate(0);   opacity: 1;   }
-      50%      { transform: scale(1.4) rotate(180deg); opacity: 0.4; }
     }
 
-    /* Music button — pixelated Y2K winamp vibe */
+    .tg-btn:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.05);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 18px 50px rgba(138,212,255,0.22),
+        0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .tg-btn:hover::before { opacity: 1; }
+    .tg-btn:active { transform: translateY(-1px) scale(0.98); }
+
+    .tg-btn svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 10px rgba(138,212,255,0.55));
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Music button */
     .music-btn {
       position: fixed;
-      bottom: 26px;
-      right: 26px;
+      bottom: 24px;
+      right: 20px;
       z-index: 10;
-      width: 54px;
-      height: 54px;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #ffd5ec 0%, #ff69b4 50%, #cc3388 100%);
-      border: 3px outset #fff;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
-      color: #fff;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 60%),
+        rgba(10,10,14,0.55);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.1s;
+      transition: transform 0.18s, border-color 0.25s, box-shadow 0.3s, background 0.25s;
       touch-action: manipulation;
-    }
-    .music-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
+      opacity: 0;
+      animation: fadeUp 0.6s cubic-bezier(.2,.7,.2,1) forwards;
+      animation-delay: 3.1s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
 
+    .music-btn:hover {
+      border-color: rgba(255,255,255,0.45);
+      transform: translateY(-2px);
+    }
+    .music-btn:active { transform: scale(0.93); }
+    .music-btn:not(.paused) {
+      border-color: rgba(138,212,255,0.55);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.35),
+        0 0 30px rgba(138,212,255,0.35);
+    }
+
+    /* Equalizer bars */
     .eq-bars {
       display: flex;
       align-items: flex-end;
       gap: 3px;
-      height: 18px;
+      height: 20px;
     }
     .eq-bars span {
       display: block;
-      width: 4px;
-      background: #fff;
-      image-rendering: pixelated;
+      width: 3px;
+      background: linear-gradient(180deg, #ffffff, #cfe9ff);
+      border-radius: 2px;
       animation: eqAnim 0.5s ease-in-out infinite alternate;
       transform-origin: bottom;
     }
-    .eq-bars span:nth-child(1) { height: 7px;  animation-duration: 0.5s; animation-delay: 0s;    }
-    .eq-bars span:nth-child(2) { height: 16px; animation-duration: 0.7s; animation-delay: 0.15s; }
-    .eq-bars span:nth-child(3) { height: 10px; animation-duration: 0.4s; animation-delay: 0.3s;  }
-    .eq-bars span:nth-child(4) { height: 14px; animation-duration: 0.6s; animation-delay: 0.1s;  }
-    @keyframes eqAnim { to { transform: scaleY(0.25); } }
+    .eq-bars span:nth-child(1) { height: 8px;  animation-duration: 0.5s; animation-delay: 0s;    }
+    .eq-bars span:nth-child(2) { height: 18px; animation-duration: 0.7s; animation-delay: 0.15s; }
+    .eq-bars span:nth-child(3) { height: 12px; animation-duration: 0.4s; animation-delay: 0.3s;  }
+    .eq-bars span:nth-child(4) { height: 16px; animation-duration: 0.6s; animation-delay: 0.1s;  }
 
-    .pause-icon { display: none; }
-    .music-btn.paused .eq-bars span { animation-play-state: paused; opacity: 0.45; }
-    .music-btn.paused .eq-bars { display: none; }
-    .music-btn.paused .pause-icon { display: flex; }
-    .pause-icon svg { width: 22px; height: 22px; fill: #fff; }
+    @keyframes eqAnim { to { transform: scaleY(0.2); } }
 
-    @supports (padding-bottom: env(safe-area-inset-bottom)) {
-      .music-btn { bottom: calc(26px + env(safe-area-inset-bottom)); }
+    .music-btn.paused .eq-bars span {
+      animation-play-state: paused;
+      opacity: 0.4;
     }
 
-    /* Respect users who prefer less motion */
+    .pause-icon { display: none; }
+    .music-btn.paused .eq-bars { display: none; }
+    .music-btn.paused .pause-icon { display: flex; }
+
+    .pause-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: rgba(255,255,255,0.75);
+    }
+
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      .music-btn { bottom: calc(24px + env(safe-area-inset-bottom)); }
+    }
+
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      .bg-stripes { animation: none; }
-      .marquee span { animation: none; padding-left: 0; }
-      .portrait { animation: none; }
-      .stars { animation: none; opacity: 1; }
-      .sparkle { animation: none; }
+      .bg { animation: none; transform: scale(1.08); }
+      .halo { animation: none; }
+      .main-text .letter {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        animation: none;
+      }
+      .divider { width: 62%; animation: none; }
+      .divider::after { opacity: 1; animation: none; }
+      .tg-btn,
+      .music-btn { opacity: 1; animation: none; }
       .eq-bars span { animation: none; }
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-stripes" aria-hidden="true"></div>
+  <div class="bg"></div>
+  <div class="wash"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <canvas id="particles"></canvas>
 
-  <div class="frame">
-    <div class="marquee"><span>★ ДОБРО ПОЖАЛОВАТЬ НА МОЮ СТРАНИЦУ ★ ПОДПИШИСЬ ★ ПРИВЕТ МИРУ ★ 2026 ★ ВСЕМ ПИСС ★ XOXO ★</span></div>
+  <main class="center">
+    <div class="halo" aria-hidden="true"></div>
+    <h1 class="main-text" id="mainText"></h1>
+    <div class="divider" aria-hidden="true"></div>
 
-    <canvas id="particles" aria-hidden="true"></canvas>
-
-    <main class="center">
-      <div class="portrait" aria-hidden="true"></div>
-      <div class="stars" aria-hidden="true">✧ ✦ ☆ ✦ ✧</div>
-      <h1 class="main-text" id="mainText">всем пиСС<small>мои подписчики</small></h1>
-
-      <a class="tg-btn" href="https://t.me/solllace_1" target="_blank" rel="noopener">→ Написать мне ←</a>
-
-      <div class="hits" aria-label="Счётчик посещений">VISITORS: 00013337</div>
-    </main>
-
-    <div class="marquee"><span>♥ best viewed in internet explorer 6 ♥ made with love ♥ 640×480 ♥ please sign my guestbook ♥</span></div>
-
-    <div class="sparkle" style="top:12%;left:8%;">✨</div>
-    <div class="sparkle" style="top:22%;right:10%;animation-delay:.5s;">⭐</div>
-    <div class="sparkle" style="bottom:24%;left:14%;animation-delay:1s;">✨</div>
-    <div class="sparkle" style="bottom:14%;right:8%;animation-delay:1.5s;">💫</div>
-  </div>
+    <a class="tg-btn" href="https://t.me/solllace_1" target="_blank" rel="noopener">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#40c4ff"/>
+            <stop offset="100%" stop-color="#1e88e5"/>
+          </linearGradient>
+        </defs>
+        <circle cx="24" cy="24" r="24" fill="url(#tg)"/>
+        <path d="M10.5 23.5L37 13L28.5 36L22 28.5L10.5 23.5Z" fill="white"/>
+        <path d="M22 28.5L26 25L33 18" stroke="#1e88e5" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M22 28.5V35L25.5 31" fill="white"/>
+      </svg>
+      Написать мне
+    </a>
+  </main>
 
   <button class="music-btn paused" id="musicBtn" aria-label="Включить музыку" aria-pressed="false">
     <div class="eq-bars">
       <span></span><span></span><span></span><span></span>
     </div>
     <div class="pause-icon">
-      <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
     </div>
   </button>
 
   <audio id="bg-audio" src="glamur.mp3" preload="none" loop></audio>
 
   <script>
-    /* ── Floating star particles (Y2K version of the petals) ── */
+    /* ── Letter animation ── */
+    const lines = ['Всем писс', 'мои подписчики'];
+    const container = document.getElementById('mainText');
+    let delay = 0.15;
+
+    lines.forEach((line, li) => {
+      const lineEl = document.createElement('span');
+      lineEl.className = 'line';
+
+      [...line].forEach(ch => {
+        if (ch === ' ') {
+          const sp = document.createElement('span');
+          sp.style.display = 'inline-block';
+          sp.style.width = '0.3em';
+          lineEl.appendChild(sp);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.textContent = ch;
+          span.style.animationDelay = delay + 's';
+          delay += 0.055;
+          lineEl.appendChild(span);
+        }
+      });
+
+      container.appendChild(lineEl);
+      if (li < lines.length - 1) delay += 0.25;
+    });
+
+    /* ── Petals (soft heart-shaped) ── */
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
     let W, H;
 
     function resize() {
-      W = canvas.width  = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width  = W * DPR;
+      canvas.height = H * DPR;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
     resize();
     window.addEventListener('resize', resize);
 
-    const COLORS = ['#ffff66', '#ff00cc', '#00ffe7', '#ffffff'];
+    const PALETTE = [
+      [255, 182, 200],
+      [255, 150, 180],
+      [255, 210, 225],
+      [255, 230, 240],
+      [210, 230, 255],
+    ];
 
-    // Scale particle count with viewport to save battery on small devices
-    const COUNT = window.innerWidth < 640 ? 18
-                : window.innerWidth < 1024 ? 28
-                : 40;
-    const particles = [];
+    const COUNT = window.innerWidth < 640 ? 26
+                : window.innerWidth < 1024 ? 42
+                : 58;
+    const petals = [];
 
-    function mk(spread) {
+    function mkPetal(spreadY) {
+      const c = PALETTE[Math.floor(Math.random() * PALETTE.length)];
       return {
         x:      Math.random() * W,
-        y:      spread ? Math.random() * H : -20 - Math.random() * 60,
-        r:      3 + Math.random() * 4,
-        vy:     0.3 + Math.random() * 0.9,
-        vx:     (Math.random() - 0.5) * 0.6,
+        y:      spreadY ? Math.random() * H : -30 - Math.random() * 80,
+        size:   Math.random() * 10 + 7,
+        vy:     Math.random() * 0.9 + 0.35,
+        vx:     (Math.random() - 0.5) * 0.7,
         rot:    Math.random() * Math.PI * 2,
-        rotV:   (Math.random() - 0.5) * 0.05,
+        rotV:   (Math.random() - 0.5) * 0.035,
         swing:  Math.random() * Math.PI * 2,
-        swingS: 0.01 + Math.random() * 0.015,
-        swingA: 0.5 + Math.random() * 1.2,
-        alpha:  0.4 + Math.random() * 0.5,
-        color:  COLORS[Math.floor(Math.random() * COLORS.length)]
+        swingS: 0.010 + Math.random() * 0.014,
+        swingA: 0.5 + Math.random() * 1.1,
+        alpha:  Math.random() * 0.45 + 0.35,
+        c
       };
     }
 
-    for (let i = 0; i < COUNT; i++) particles.push(mk(true));
+    for (let i = 0; i < COUNT; i++) petals.push(mkPetal(true));
 
-    /* A 4-point sparkle shape (+ diamond) — unmistakably Y2K */
-    function drawSparkle(p) {
+    function drawPetal(p) {
+      const s = p.size;
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot);
       ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.color;
+      // soft glow
+      ctx.shadowColor = `rgba(${p.c[0]},${p.c[1]},${p.c[2]},0.6)`;
+      ctx.shadowBlur = 14;
+      // petal shape using two bezier strokes
       ctx.beginPath();
-      const r = p.r, r2 = r * 0.35;
-      ctx.moveTo(0, -r);
-      ctx.lineTo(r2, -r2);
-      ctx.lineTo(r, 0);
-      ctx.lineTo(r2, r2);
-      ctx.lineTo(0, r);
-      ctx.lineTo(-r2, r2);
-      ctx.lineTo(-r, 0);
-      ctx.lineTo(-r2, -r2);
+      ctx.moveTo(0, -s * 0.3);
+      ctx.bezierCurveTo(s * 0.5, -s * 0.5,  s * 0.6,  s * 0.3, 0, s * 0.6);
+      ctx.bezierCurveTo(-s * 0.6,  s * 0.3, -s * 0.5, -s * 0.5, 0, -s * 0.3);
       ctx.closePath();
+      const grad = ctx.createLinearGradient(0, -s * 0.5, 0, s * 0.6);
+      grad.addColorStop(0, `rgba(${p.c[0]},${p.c[1]},${p.c[2]},1)`);
+      grad.addColorStop(1, `rgba(${p.c[0]},${p.c[1]},${p.c[2]},0.4)`);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      // highlight
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = p.alpha * 0.6;
+      ctx.beginPath();
+      ctx.ellipse(-s * 0.12, -s * 0.08, s * 0.18, s * 0.28, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
       ctx.fill();
       ctx.restore();
     }
 
     if (prefersReducedMotion) {
-      // Static snapshot for users who prefer reduced motion
-      particles.forEach(drawSparkle);
+      petals.forEach(drawPetal);
     } else {
       (function loop() {
         if (document.hidden) { requestAnimationFrame(loop); return; }
         ctx.clearRect(0, 0, W, H);
-        particles.forEach(p => {
+        petals.forEach(p => {
           p.swing += p.swingS;
           p.x  += p.vx + Math.sin(p.swing) * p.swingA;
           p.y  += p.vy;
           p.rot += p.rotV;
-          drawSparkle(p);
-          if (p.y > H + 20) Object.assign(p, mk(false));
+          drawPetal(p);
+          if (p.y > H + 30) Object.assign(p, mkPetal(false));
         });
         requestAnimationFrame(loop);
       })();
     }
 
-    /* ── Audio: start only on user interaction (browsers block autoplay anyway) ── */
+    /* ── Audio ── */
     const audio = document.getElementById('bg-audio');
     const btn   = document.getElementById('musicBtn');
     audio.volume = 0.55;
