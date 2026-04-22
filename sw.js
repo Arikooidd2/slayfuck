@@ -1,5 +1,5 @@
 // Versioned cache — bump when you ship new assets so clients refresh cleanly.
-const CACHE = 'slayfuck-v2';
+const CACHE = 'slayfuck-v3';
 const ASSETS = [
   './',
   'index.html',
