@@ -443,7 +443,7 @@
     </div>
   </button>
 
-  <audio id="bg-audio" src="glamur.mp3" preload="auto" loop muted autoplay playsinline></audio>
+  <audio id="bg-audio" src="glamur.mp3" preload="auto" loop playsinline></audio>
 
   <script>
     /* ── Letter animation ── */
@@ -575,12 +575,11 @@
       })();
     }
 
-    /* ── Audio: muted autoplay → unmute on first user interaction ── */
+    /* ── Audio: try to play immediately, fall back to first-gesture ── */
     const audio = document.getElementById('bg-audio');
     const btn   = document.getElementById('musicBtn');
     audio.volume = 0.55;
     let playing = false;
-    let unmuted = false;
 
     function setPlaying(val) {
       playing = val;
@@ -589,31 +588,36 @@
       btn.setAttribute('aria-label', val ? 'Выключить музыку' : 'Включить музыку');
     }
 
-    // Kick off silent playback immediately (most browsers allow muted autoplay)
-    audio.play().catch(() => { /* ignored — fallback is first-tap unmute */ });
-
-    function unmuteOnce() {
-      if (unmuted) return;
-      unmuted = true;
-      audio.muted = false;
-      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    function tryPlay() {
+      return audio.play()
+        .then(() => { setPlaying(true); return true; })
+        .catch(() => { setPlaying(false); return false; });
     }
 
-    ['pointerdown', 'keydown', 'touchstart'].forEach(ev =>
-      window.addEventListener(ev, unmuteOnce, { once: true, passive: true })
+    // Attempt immediate playback (works when user has interacted with the domain before,
+    // or when the browser's autoplay policy permits it).
+    tryPlay();
+
+    // Otherwise, the first user gesture anywhere on the page starts the music.
+    // capture:true ensures we see the event even when children call stopPropagation.
+    function kickOnce() {
+      if (!playing) tryPlay();
+      ['pointerdown', 'touchstart', 'keydown', 'click'].forEach(ev =>
+        document.removeEventListener(ev, kickOnce, { capture: true })
+      );
+    }
+    ['pointerdown', 'touchstart', 'keydown', 'click'].forEach(ev =>
+      document.addEventListener(ev, kickOnce, { capture: true, passive: true })
     );
 
+    // Music button toggles play/pause.
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      if (!unmuted) {
-        unmuteOnce();
-        return;
-      }
       if (playing) {
         audio.pause();
         setPlaying(false);
       } else {
-        audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+        tryPlay();
       }
     });
 
