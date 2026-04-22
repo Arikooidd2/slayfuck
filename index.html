@@ -169,9 +169,9 @@
     .main-text .letter {
       display: inline-block;
       opacity: 0;
-      transform: translateY(24px);
-      filter: blur(6px);
-      animation: letterIn 0.7s cubic-bezier(.2,.7,.2,1) forwards;
+      transform: translateY(14px);
+      filter: blur(4px);
+      animation: letterIn 0.35s cubic-bezier(.2,.7,.2,1) forwards;
     }
 
     @keyframes letterIn {
@@ -181,29 +181,14 @@
     .divider {
       height: 1px;
       width: 0%;
-      margin: 22px auto 0;
+      margin: 20px auto 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
-      animation: lineExpand 1s cubic-bezier(.2,.7,.2,1) forwards;
-      animation-delay: 2s;
+      animation: lineExpand 0.5s cubic-bezier(.2,.7,.2,1) forwards;
+      animation-delay: 0.9s;
       position: relative;
-    }
-    .divider::after {
-      content: "✦";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 10px;
-      color: rgba(255,255,255,0.65);
-      background: rgba(6,6,8,0.6);
-      padding: 0 10px;
-      opacity: 0;
-      animation: starIn 0.4s ease forwards;
-      animation-delay: 2.6s;
     }
 
     @keyframes lineExpand { to { width: 62%; } }
-    @keyframes starIn     { to { opacity: 1; } }
 
     /* Telegram CTA */
     .tg-btn {
@@ -232,8 +217,8 @@
                   border-color 0.25s, box-shadow 0.25s, background 0.25s;
       cursor: pointer;
       opacity: 0;
-      animation: fadeUp 0.8s cubic-bezier(.2,.7,.2,1) forwards;
-      animation-delay: 2.8s;
+      animation: fadeUp 0.45s cubic-bezier(.2,.7,.2,1) forwards;
+      animation-delay: 1.15s;
       touch-action: manipulation;
       overflow: hidden;
     }
@@ -299,8 +284,8 @@
       transition: transform 0.18s, border-color 0.25s, box-shadow 0.3s, background 0.25s;
       touch-action: manipulation;
       opacity: 0;
-      animation: fadeUp 0.6s cubic-bezier(.2,.7,.2,1) forwards;
-      animation-delay: 3.1s;
+      animation: fadeUp 0.4s cubic-bezier(.2,.7,.2,1) forwards;
+      animation-delay: 1.35s;
       box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
 
@@ -357,6 +342,52 @@
       .music-btn { bottom: calc(24px + env(safe-area-inset-bottom)); }
     }
 
+    /* ── Responsive tweaks ── */
+
+    /* Very narrow phones (iPhone SE, Galaxy Fold closed, etc.) */
+    @media (max-width: 380px) {
+      .center { padding: 20px 14px; }
+      .main-text { font-size: clamp(2.2rem, 13vw, 3.2rem); }
+      .main-text .line:last-child { font-size: 0.6em; }
+      .tg-btn { padding: 13px 24px; margin-top: 26px; gap: 10px; }
+      .tg-btn svg { width: 20px; height: 20px; }
+      .music-btn { width: 46px; height: 46px; right: 14px; bottom: 18px; }
+      .divider { margin-top: 16px; }
+    }
+
+    /* Landscape phones / short viewports */
+    @media (max-height: 480px) and (orientation: landscape) {
+      .center { padding: 12px 24px; justify-content: center; }
+      .main-text { font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.05; }
+      .main-text .line:last-child { font-size: 0.55em; }
+      .tg-btn { margin-top: 16px; padding: 11px 26px; }
+      .divider { margin-top: 12px; }
+      .halo { height: min(80vh, 260px); filter: blur(40px); }
+    }
+
+    /* Tablet / mid range */
+    @media (min-width: 600px) and (max-width: 1023px) {
+      .main-text { font-size: clamp(3.2rem, 8vw, 5rem); }
+      .tg-btn { padding: 16px 36px; font-size: 1rem; }
+    }
+
+    /* Large desktops / ultrawide */
+    @media (min-width: 1400px) {
+      .main-text { font-size: clamp(5rem, 7vw, 7.5rem); }
+      .halo { width: min(70vw, 900px); height: min(55vh, 500px); }
+      .tg-btn { padding: 17px 40px; font-size: 1.05rem; }
+      .music-btn { width: 56px; height: 56px; bottom: 28px; right: 28px; }
+    }
+
+    /* Hover-less touch devices: disable hover lift so it doesn't stick after tap */
+    @media (hover: none) {
+      .tg-btn:hover { transform: none; box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        0 10px 40px rgba(0,0,0,0.35); }
+      .tg-btn:hover::before { opacity: 0; }
+      .music-btn:hover { transform: none; }
+    }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .bg { animation: none; transform: scale(1.08); }
@@ -368,7 +399,6 @@
         animation: none;
       }
       .divider { width: 62%; animation: none; }
-      .divider::after { opacity: 1; animation: none; }
       .tg-btn,
       .music-btn { opacity: 1; animation: none; }
       .eq-bars span { animation: none; }
@@ -413,13 +443,13 @@
     </div>
   </button>
 
-  <audio id="bg-audio" src="glamur.mp3" preload="none" loop></audio>
+  <audio id="bg-audio" src="glamur.mp3" preload="auto" loop muted autoplay playsinline></audio>
 
   <script>
     /* ── Letter animation ── */
     const lines = ['Всем писс', 'мои подписчики'];
     const container = document.getElementById('mainText');
-    let delay = 0.15;
+    let delay = 0.05;
 
     lines.forEach((line, li) => {
       const lineEl = document.createElement('span');
@@ -436,13 +466,13 @@
           span.className = 'letter';
           span.textContent = ch;
           span.style.animationDelay = delay + 's';
-          delay += 0.055;
+          delay += 0.025;
           lineEl.appendChild(span);
         }
       });
 
       container.appendChild(lineEl);
-      if (li < lines.length - 1) delay += 0.25;
+      if (li < lines.length - 1) delay += 0.1;
     });
 
     /* ── Petals (soft heart-shaped) ── */
@@ -545,11 +575,12 @@
       })();
     }
 
-    /* ── Audio ── */
+    /* ── Audio: muted autoplay → unmute on first user interaction ── */
     const audio = document.getElementById('bg-audio');
     const btn   = document.getElementById('musicBtn');
     audio.volume = 0.55;
     let playing = false;
+    let unmuted = false;
 
     function setPlaying(val) {
       playing = val;
@@ -558,8 +589,26 @@
       btn.setAttribute('aria-label', val ? 'Выключить музыку' : 'Включить музыку');
     }
 
+    // Kick off silent playback immediately (most browsers allow muted autoplay)
+    audio.play().catch(() => { /* ignored — fallback is first-tap unmute */ });
+
+    function unmuteOnce() {
+      if (unmuted) return;
+      unmuted = true;
+      audio.muted = false;
+      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    }
+
+    ['pointerdown', 'keydown', 'touchstart'].forEach(ev =>
+      window.addEventListener(ev, unmuteOnce, { once: true, passive: true })
+    );
+
     btn.addEventListener('click', e => {
       e.stopPropagation();
+      if (!unmuted) {
+        unmuteOnce();
+        return;
+      }
       if (playing) {
         audio.pause();
         setPlaying(false);
