@@ -2,9 +2,26 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
-  <title>Всем писс</title>
+  <title>Всем писс, мои подписчики</title>
+  <meta name="description" content="Всем писс, мои подписчики — личная страничка со ссылкой на Telegram-канал.">
+
+  <!-- Open Graph / Telegram / VK preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Всем писс, мои подписчики">
+  <meta property="og:description" content="Личная страничка со ссылкой на Telegram-канал.">
+  <meta property="og:image" content="photo.jpeg">
+
+  <!-- Twitter / X preview -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Всем писс, мои подписчики">
+  <meta name="twitter:description" content="Личная страничка со ссылкой на Telegram-канал.">
+  <meta name="twitter:image" content="photo.jpeg">
+
+  <!-- Inline SVG favicon (no extra request) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23000'/%3E%3Cpath d='M38 18v20a8 8 0 1 1-4-7V14l18-4v24a8 8 0 1 1-4-7V10' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -220,6 +237,20 @@
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
       .music-btn { bottom: calc(24px + env(safe-area-inset-bottom)); }
     }
+
+    /* Respect users who prefer less motion */
+    @media (prefers-reduced-motion: reduce) {
+      .bg { animation: none; transform: scale(1.05); }
+      .main-text .letter {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+      .divider { width: 70%; animation: none; }
+      .tg-btn,
+      .music-btn { opacity: 1; animation: none; }
+      .eq-bars span { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -228,8 +259,8 @@
   <div class="vignette"></div>
   <canvas id="particles"></canvas>
 
-  <div class="center">
-    <div class="main-text" id="mainText"></div>
+  <main class="center">
+    <h1 class="main-text" id="mainText"></h1>
     <div class="divider"></div>
 
     <a class="tg-btn" href="https://t.me/solllace_1" target="_blank" rel="noopener">
@@ -241,9 +272,9 @@
       </svg>
       Написать мне
     </a>
-  </div>
+  </main>
 
-  <button class="music-btn paused" id="musicBtn" aria-label="Музыка">
+  <button class="music-btn paused" id="musicBtn" aria-label="Включить музыку" aria-pressed="false">
     <div class="eq-bars">
       <span></span><span></span><span></span><span></span>
     </div>
@@ -252,11 +283,11 @@
     </div>
   </button>
 
-  <audio id="bg-audio" src="glamur.mp3" preload="auto" loop></audio>
+  <audio id="bg-audio" src="glamur.mp3" preload="none" loop></audio>
 
   <script>
     /* ── Letter animation ── */
-    const lines = ['Всем писс', 'мои подпищики'];
+    const lines = ['Всем писс', 'мои подписчики'];
     const container = document.getElementById('mainText');
     let delay = 0.1;
 
@@ -285,6 +316,7 @@
     });
 
     /* ── Petals ── */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     let W, H;
@@ -342,18 +374,24 @@
       ctx.restore();
     }
 
-    (function loop() {
-      ctx.clearRect(0, 0, W, H);
-      petals.forEach(p => {
-        p.swing += p.swingS;
-        p.x  += p.vx + Math.sin(p.swing) * p.swingA;
-        p.y  += p.vy;
-        p.rot += p.rotV;
-        drawPetal(p);
-        if (p.y > H + 20) Object.assign(p, mkPetal(false));
-      });
-      requestAnimationFrame(loop);
-    })();
+    if (prefersReducedMotion) {
+      // Draw a static snapshot of petals without animating for users who prefer reduced motion
+      petals.forEach(drawPetal);
+    } else {
+      (function loop() {
+        if (document.hidden) { requestAnimationFrame(loop); return; }
+        ctx.clearRect(0, 0, W, H);
+        petals.forEach(p => {
+          p.swing += p.swingS;
+          p.x  += p.vx + Math.sin(p.swing) * p.swingA;
+          p.y  += p.vy;
+          p.rot += p.rotV;
+          drawPetal(p);
+          if (p.y > H + 20) Object.assign(p, mkPetal(false));
+        });
+        requestAnimationFrame(loop);
+      })();
+    }
 
     /* ── Audio ── */
     const audio = document.getElementById('bg-audio');
@@ -364,23 +402,19 @@
     function setPlaying(val) {
       playing = val;
       btn.classList.toggle('paused', !val);
-    }
-
-    function tryPlay() {
-      audio.play().then(() => setPlaying(true)).catch(() => {
-        const start = () => { if (!playing) audio.play().then(() => setPlaying(true)); };
-        document.addEventListener('touchstart', start, { once: true });
-        document.addEventListener('click',      start, { once: true });
-      });
+      btn.setAttribute('aria-pressed', String(val));
+      btn.setAttribute('aria-label', val ? 'Выключить музыку' : 'Включить музыку');
     }
 
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      if (playing) { audio.pause(); setPlaying(false); }
-      else         { audio.play().then(() => setPlaying(true)); }
+      if (playing) {
+        audio.pause();
+        setPlaying(false);
+      } else {
+        audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      }
     });
-
-    window.addEventListener('load', tryPlay);
   </script>
 
 </body>
