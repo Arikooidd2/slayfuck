@@ -2,20 +2,20 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000">
   <title>Всем писс</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    html, body {
+      height: 100%;
+      width: 100%;
       overflow: hidden;
       font-family: 'Montserrat', sans-serif;
       background: #000;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .bg {
@@ -33,83 +33,192 @@
       to   { transform: scale(1.12); }
     }
 
-    /* Vignette overlay */
     .vignette {
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.75) 100%);
+      background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.82) 100%);
       z-index: 1;
+      pointer-events: none;
+    }
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
       pointer-events: none;
     }
 
     .center {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       text-align: center;
       padding: 20px;
-      animation: fadeIn 1.2s ease both;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      min-height: 100vh;
     }
 
     .main-text {
       font-family: 'Bebas Neue', cursive;
-      font-size: clamp(2.4rem, 8vw, 5.5rem);
+      font-size: clamp(2.2rem, 10vw, 5.5rem);
       letter-spacing: 0.06em;
-      line-height: 1.1;
+      line-height: 1.15;
       color: #fff;
       text-shadow:
-        0 0 30px rgba(255,255,255,0.25),
-        0 4px 24px rgba(0,0,0,0.9),
-        2px 2px 0 rgba(0,0,0,0.6);
-      position: relative;
+        0 0 40px rgba(255,255,255,0.2),
+        0 4px 24px rgba(0,0,0,0.95),
+        2px 2px 0 rgba(0,0,0,0.7);
     }
 
-    .main-text::after {
-      content: '';
+    .main-text .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px) scale(0.8);
+      animation: letterIn 0.4s ease forwards;
+    }
+
+    @keyframes letterIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .main-text .line {
       display: block;
-      height: 3px;
-      width: 60%;
-      margin: 14px auto 0;
-      background: linear-gradient(90deg, transparent, #fff, transparent);
-      opacity: 0.5;
     }
 
-    /* Telegram button */
+    .divider {
+      height: 2px;
+      width: 0%;
+      margin: 16px auto 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+      animation: lineExpand 0.8s ease forwards;
+      animation-delay: 1.8s;
+    }
+
+    @keyframes lineExpand {
+      to { width: 70%; }
+    }
+
     .tg-btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-top: 30px;
+      margin-top: 28px;
       padding: 13px 28px;
-      background: rgba(255,255,255,0.1);
-      border: 1.5px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255,255,255,0.25);
       border-radius: 50px;
       color: #fff;
       text-decoration: none;
-      font-size: 1rem;
+      font-size: clamp(0.85rem, 3.5vw, 1rem);
       font-weight: 700;
       letter-spacing: 0.04em;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
       cursor: pointer;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+      animation-delay: 2.2s;
+      touch-action: manipulation;
     }
 
     .tg-btn:hover {
-      background: rgba(41,182,246,0.25);
+      background: rgba(41,182,246,0.22);
       border-color: #29b6f6;
       transform: translateY(-3px);
       box-shadow: 0 8px 30px rgba(41,182,246,0.3);
     }
 
+    .tg-btn:active {
+      transform: scale(0.97);
+    }
+
     .tg-btn svg {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       flex-shrink: 0;
-      filter: drop-shadow(0 0 6px rgba(41,182,246,0.6));
+      filter: drop-shadow(0 0 6px rgba(41,182,246,0.7));
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Music button */
+    .music-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 10;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.35);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      touch-action: manipulation;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+      animation-delay: 2.5s;
+    }
+
+    .music-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); }
+    .music-btn:active { transform: scale(0.92); }
+
+    /* Equalizer bars */
+    .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .eq-bars span {
+      display: block;
+      width: 3px;
+      background: #fff;
+      border-radius: 2px;
+      animation: eqAnim 0.5s ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+
+    .eq-bars span:nth-child(1) { height: 7px;  animation-duration: 0.5s; animation-delay: 0s;    }
+    .eq-bars span:nth-child(2) { height: 16px; animation-duration: 0.7s; animation-delay: 0.15s; }
+    .eq-bars span:nth-child(3) { height: 10px; animation-duration: 0.4s; animation-delay: 0.3s;  }
+    .eq-bars span:nth-child(4) { height: 14px; animation-duration: 0.6s; animation-delay: 0.1s;  }
+
+    @keyframes eqAnim {
+      to { transform: scaleY(0.25); }
+    }
+
+    .music-btn.paused .eq-bars span {
+      animation-play-state: paused;
+      opacity: 0.45;
+    }
+
+    /* Pause icon shown when paused */
+    .pause-icon { display: none; }
+    .music-btn.paused .eq-bars { display: none; }
+    .music-btn.paused .pause-icon { display: flex; }
+
+    .pause-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: rgba(255,255,255,0.5);
+    }
+
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      .music-btn { bottom: calc(24px + env(safe-area-inset-bottom)); }
     }
   </style>
 </head>
@@ -117,12 +226,13 @@
 
   <div class="bg"></div>
   <div class="vignette"></div>
+  <canvas id="particles"></canvas>
 
   <div class="center">
-    <div class="main-text">Всем писс<br>мои подпищики</div>
+    <div class="main-text" id="mainText"></div>
+    <div class="divider"></div>
 
     <a class="tg-btn" href="https://t.me/solllace_1" target="_blank" rel="noopener">
-      <!-- Telegram plane icon -->
       <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="24" cy="24" r="24" fill="#29B6F6"/>
         <path d="M10.5 23.5L37 13L28.5 36L22 28.5L10.5 23.5Z" fill="white"/>
@@ -133,19 +243,117 @@
     </a>
   </div>
 
-  <!-- Auto-play audio (muted trick for autoplay policy, then unmute) -->
-  <audio id="bg-audio" src="glamur.mp3" preload="auto"></audio>
+  <button class="music-btn paused" id="musicBtn" aria-label="Музыка">
+    <div class="eq-bars">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="pause-icon">
+      <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </div>
+  </button>
+
+  <audio id="bg-audio" src="glamur.mp3" preload="auto" loop></audio>
 
   <script>
-    // Try autoplay; browsers block unmuted autoplay so we try anyway
-    const audio = document.getElementById('bg-audio');
-    audio.volume = 0.5;
-    const tryPlay = () => {
-      audio.play().catch(() => {
-        // On first user interaction, play
-        document.addEventListener('click', () => audio.play(), { once: true });
+    /* ── Letter animation ── */
+    const lines = ['Всем писс', 'мои подпищики'];
+    const container = document.getElementById('mainText');
+    let delay = 0.1;
+
+    lines.forEach((line, li) => {
+      const lineEl = document.createElement('span');
+      lineEl.className = 'line';
+
+      [...line].forEach(ch => {
+        if (ch === ' ') {
+          const sp = document.createElement('span');
+          sp.style.display = 'inline-block';
+          sp.style.width = '0.3em';
+          lineEl.appendChild(sp);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.textContent = ch;
+          span.style.animationDelay = delay + 's';
+          delay += 0.065;
+          lineEl.appendChild(span);
+        }
       });
-    };
+
+      container.appendChild(lineEl);
+      if (li < lines.length - 1) delay += 0.2;
+    });
+
+    /* ── Particles ── */
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COUNT = 90;
+    const particles = [];
+
+    function mkParticle(spreadY) {
+      return {
+        x: Math.random() * W,
+        y: spreadY ? Math.random() * H : H + Math.random() * 40,
+        r: Math.random() * 2.2 + 0.4,
+        vy: -(Math.random() * 0.55 + 0.25),
+        vx: (Math.random() - 0.5) * 0.25,
+        alpha: Math.random() * 0.55 + 0.15,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.02 + Math.random() * 0.02
+      };
+    }
+
+    for (let i = 0; i < COUNT; i++) particles.push(mkParticle(true));
+
+    (function loop() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.phase += p.speed;
+        const a = p.alpha * (0.55 + 0.45 * Math.sin(p.phase));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.fill();
+        p.x += p.vx; p.y += p.vy;
+        if (p.y < -8) Object.assign(p, mkParticle(false));
+      });
+      requestAnimationFrame(loop);
+    })();
+
+    /* ── Audio ── */
+    const audio = document.getElementById('bg-audio');
+    const btn   = document.getElementById('musicBtn');
+    audio.volume = 0.55;
+    let playing = false;
+
+    function setPlaying(val) {
+      playing = val;
+      btn.classList.toggle('paused', !val);
+    }
+
+    function tryPlay() {
+      audio.play().then(() => setPlaying(true)).catch(() => {
+        const start = () => { if (!playing) audio.play().then(() => setPlaying(true)); };
+        document.addEventListener('touchstart', start, { once: true });
+        document.addEventListener('click',      start, { once: true });
+      });
+    }
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (playing) { audio.pause(); setPlaying(false); }
+      else         { audio.play().then(() => setPlaying(true)); }
+    });
+
     window.addEventListener('load', tryPlay);
   </script>
 
