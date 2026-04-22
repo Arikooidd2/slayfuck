@@ -21,6 +21,13 @@
 
   <!-- Inline SVG favicon (no extra request) -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23000'/%3E%3Cpath d='M38 18v20a8 8 0 1 1-4-7V14l18-4v24a8 8 0 1 1-4-7V10' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Preload above-the-fold assets -->
+  <link rel="preload" as="image" href="photo.webp" type="image/webp" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -38,7 +45,19 @@
     .bg {
       position: fixed;
       inset: 0;
+      /* Modern browsers pick webp; image-set falls back to jpeg for older ones */
       background: url('photo.jpeg') center/cover no-repeat;
+      background-image: -webkit-image-set(
+        url('photo.webp') type('image/webp') 1x,
+        url('photo.jpeg') type('image/jpeg') 1x
+      );
+      background-image: image-set(
+        url('photo.webp') type('image/webp') 1x,
+        url('photo.jpeg') type('image/jpeg') 1x
+      );
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
       filter: brightness(0.55) saturate(1.2);
       z-index: 0;
       transform: scale(1.05);
@@ -336,7 +355,10 @@
       'rgba(255,245,248,',
     ];
 
-    const COUNT = 55;
+    // Scale petal count down on smaller / lower-DPR devices to save CPU / battery
+    const COUNT = window.innerWidth < 640 ? 25
+                : window.innerWidth < 1024 ? 40
+                : 55;
     const petals = [];
 
     function mkPetal(spreadY) {
@@ -415,6 +437,13 @@
         audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
       }
     });
+
+    /* ── PWA: register service worker for offline / installable support ── */
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => { /* first-visit offline is fine */ });
+      });
+    }
   </script>
 
 </body>
