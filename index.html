@@ -2,248 +2,331 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#000000">
-  <title>Всем писс</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ff00cc">
+  <title>★ Всем писс, мои подписчики ★</title>
+  <meta name="description" content="Всем писс, мои подписчики — личная страничка со ссылкой на Telegram-канал.">
+
+  <!-- Open Graph / Telegram / VK preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Всем писс, мои подписчики">
+  <meta property="og:description" content="Личная страничка со ссылкой на Telegram-канал.">
+  <meta property="og:image" content="photo.jpeg">
+
+  <!-- Twitter / X preview -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Всем писс, мои подписчики">
+  <meta name="twitter:description" content="Личная страничка со ссылкой на Telegram-канал.">
+  <meta name="twitter:image" content="photo.jpeg">
+
+  <!-- Inline SVG favicon (hot-pink star to match the Y2K vibe) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ff00cc'/%3E%3Cstop offset='100%25' stop-color='%2300ffe7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 4l7 18 19 2-14 13 4 19-16-10-16 10 4-19L6 24l19-2z' fill='url(%23g)' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Preload above-the-fold assets -->
+  <link rel="preload" as="image" href="photo.webp" type="image/webp" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik+Glitch&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       height: 100%;
       width: 100%;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', system-ui, sans-serif;
+      color: #fff;
+      background: #1a0033;
       overflow: hidden;
-      font-family: 'Montserrat', sans-serif;
-      background: #000;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .bg {
-      position: fixed;
-      inset: 0;
-      background: url('photo.jpeg') center/cover no-repeat;
-      filter: brightness(0.55) saturate(1.2);
-      z-index: 0;
-      transform: scale(1.05);
-      animation: subtleZoom 20s ease-in-out infinite alternate;
+    /* Animated diagonal rainbow stripes — the unmistakable Y2K background */
+    .bg-stripes {
+      position: fixed; inset: 0; z-index: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        #ff00cc 0 20px,
+        #3333ff 20px 40px,
+        #00ffe7 40px 60px
+      );
+      background-size: 600% 600%;
+      animation: shift 8s linear infinite;
     }
 
-    @keyframes subtleZoom {
-      from { transform: scale(1.05); }
-      to   { transform: scale(1.12); }
+    @keyframes shift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
     }
 
-    .vignette {
+    /* Ridged silver frame around everything, inside the browser viewport */
+    .frame {
       position: fixed;
+      inset: 12px;
+      z-index: 1;
+      border: 4px ridge silver;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 10%, rgba(255,255,255,0.25), transparent 60%),
+        linear-gradient(135deg, rgba(0,0,0,0.55), rgba(60,0,90,0.55));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Marquee strips top + bottom */
+    .marquee {
+      flex: 0 0 auto;
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: #ffff66;
+      text-shadow: 2px 2px 0 #ff00cc;
+      padding: 6px 0;
+      border-top: 2px solid #ff00cc;
+      border-bottom: 2px solid #00ffe7;
+      background: rgba(0,0,0,0.5);
+    }
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 18s linear infinite;
+    }
+    @keyframes scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    #particles {
+      position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.82) 100%);
       z-index: 1;
       pointer-events: none;
     }
 
-    #particles {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .center {
+    /* Center content area */
+    main.center {
       position: relative;
-      z-index: 3;
-      text-align: center;
-      padding: 20px;
+      z-index: 2;
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100dvh;
-      min-height: 100vh;
+      gap: clamp(12px, 2vw, 20px);
+      padding: 20px;
+      min-height: 0;
     }
+
+    .portrait {
+      width: clamp(120px, 18vw, 180px);
+      height: clamp(120px, 18vw, 180px);
+      border-radius: 50%;
+      background: url('photo.jpeg') center/cover no-repeat;
+      background-image: -webkit-image-set(
+        url('photo.webp') type('image/webp') 1x,
+        url('photo.jpeg') type('image/jpeg') 1x
+      );
+      background-image: image-set(
+        url('photo.webp') type('image/webp') 1x,
+        url('photo.jpeg') type('image/jpeg') 1x
+      );
+      background-position: center;
+      background-size: cover;
+      border: 6px double #ff00cc;
+      box-shadow: 0 0 40px #ff00cc, 0 0 80px rgba(255,0,204,0.4);
+      animation: bob 3s ease-in-out infinite alternate;
+    }
+    @keyframes bob {
+      from { transform: translateY(-4px) rotate(-2deg); }
+      to   { transform: translateY( 4px) rotate( 2deg); }
+    }
+
+    .stars {
+      color: #ffff66;
+      font-size: 22px;
+      letter-spacing: 8px;
+      text-shadow: 0 0 6px #fff, 0 0 12px #ff00cc;
+      animation: blink 1s steps(2) infinite;
+      text-align: center;
+    }
+    @keyframes blink { 50% { opacity: 0.4; } }
 
     .main-text {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(2.2rem, 10vw, 5.5rem);
-      letter-spacing: 0.06em;
-      line-height: 1.15;
-      color: #fff;
-      text-shadow:
-        0 0 40px rgba(255,255,255,0.2),
-        0 4px 24px rgba(0,0,0,0.95),
-        2px 2px 0 rgba(0,0,0,0.7);
+      font-family: 'Rubik Glitch', 'Impact', sans-serif;
+      font-size: clamp(32px, 7vw, 72px);
+      font-weight: 400;
+      line-height: 1;
+      text-align: center;
+      letter-spacing: 0.02em;
+      background: linear-gradient(
+        180deg,
+        #fff 0%,
+        #b4b4ff 40%,
+        #666  50%,
+        #fff  60%,
+        #ffaaff 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,0,0,0.3);
+      filter: drop-shadow(3px 3px 0 #ff00cc) drop-shadow(-2px -2px 0 #00ffe7);
     }
-
-    .main-text .letter {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px) scale(0.8);
-      animation: letterIn 0.4s ease forwards;
-    }
-
-    @keyframes letterIn {
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .main-text .line {
+    .main-text small {
       display: block;
-    }
-
-    .divider {
-      height: 2px;
-      width: 0%;
-      margin: 16px auto 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
-      animation: lineExpand 0.8s ease forwards;
-      animation-delay: 1.8s;
-    }
-
-    @keyframes lineExpand {
-      to { width: 70%; }
+      font-size: 0.45em;
+      margin-top: 6px;
     }
 
     .tg-btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-top: 28px;
-      padding: 13px 28px;
-      background: rgba(255,255,255,0.08);
-      border: 1.5px solid rgba(255,255,255,0.25);
-      border-radius: 50px;
-      color: #fff;
+      padding: 14px 32px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(10px, 2.4vw, 14px);
       text-decoration: none;
-      font-size: clamp(0.85rem, 3.5vw, 1rem);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+      color: #000;
+      background: linear-gradient(180deg, #ffd5ec 0%, #ff69b4 40%, #cc3388 60%, #ff99cc 100%);
+      border: 3px outset #fff;
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
+      text-transform: uppercase;
       cursor: pointer;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards;
-      animation-delay: 2.2s;
+      letter-spacing: 0.04em;
+      transition: transform 0.1s;
       touch-action: manipulation;
     }
-
-    .tg-btn:hover {
-      background: rgba(41,182,246,0.22);
-      border-color: #29b6f6;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(41,182,246,0.3);
-    }
-
     .tg-btn:active {
-      transform: scale(0.97);
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
+    }
+    .tg-btn:hover {
+      background: linear-gradient(180deg, #ffe0f0 0%, #ff7ac0 40%, #e04aa0 60%, #ffb0dd 100%);
     }
 
-    .tg-btn svg {
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-      filter: drop-shadow(0 0 6px rgba(41,182,246,0.7));
+    /* Retro neon visitor counter */
+    .hits {
+      font-family: 'Press Start 2P', monospace;
+      color: #00ff66;
+      font-size: 10px;
+      background: #000;
+      border: 2px solid #00ff66;
+      padding: 6px 10px;
+      letter-spacing: 0.08em;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Sparkle stars in the corners */
+    .sparkle {
+      position: absolute;
+      font-size: 18px;
+      pointer-events: none;
+      animation: twinkle 2s infinite;
+      z-index: 2;
+    }
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1)   rotate(0);   opacity: 1;   }
+      50%      { transform: scale(1.4) rotate(180deg); opacity: 0.4; }
     }
 
-    /* Music button */
+    /* Music button — pixelated Y2K winamp vibe */
     .music-btn {
       position: fixed;
-      bottom: 24px;
-      right: 20px;
+      bottom: 26px;
+      right: 26px;
       z-index: 10;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.35);
-      border: 1.5px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      width: 54px;
+      height: 54px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #ffd5ec 0%, #ff69b4 50%, #cc3388 100%);
+      border: 3px outset #fff;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      transition: transform 0.1s;
       touch-action: manipulation;
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards;
-      animation-delay: 2.5s;
+    }
+    .music-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.6), 0 0 0 2px #000;
     }
 
-    .music-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); }
-    .music-btn:active { transform: scale(0.92); }
-
-    /* Equalizer bars */
     .eq-bars {
       display: flex;
       align-items: flex-end;
       gap: 3px;
       height: 18px;
     }
-
     .eq-bars span {
       display: block;
-      width: 3px;
+      width: 4px;
       background: #fff;
-      border-radius: 2px;
+      image-rendering: pixelated;
       animation: eqAnim 0.5s ease-in-out infinite alternate;
       transform-origin: bottom;
     }
-
     .eq-bars span:nth-child(1) { height: 7px;  animation-duration: 0.5s; animation-delay: 0s;    }
     .eq-bars span:nth-child(2) { height: 16px; animation-duration: 0.7s; animation-delay: 0.15s; }
     .eq-bars span:nth-child(3) { height: 10px; animation-duration: 0.4s; animation-delay: 0.3s;  }
     .eq-bars span:nth-child(4) { height: 14px; animation-duration: 0.6s; animation-delay: 0.1s;  }
+    @keyframes eqAnim { to { transform: scaleY(0.25); } }
 
-    @keyframes eqAnim {
-      to { transform: scaleY(0.25); }
-    }
-
-    .music-btn.paused .eq-bars span {
-      animation-play-state: paused;
-      opacity: 0.45;
-    }
-
-    /* Pause icon shown when paused */
     .pause-icon { display: none; }
+    .music-btn.paused .eq-bars span { animation-play-state: paused; opacity: 0.45; }
     .music-btn.paused .eq-bars { display: none; }
     .music-btn.paused .pause-icon { display: flex; }
-
-    .pause-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: rgba(255,255,255,0.5);
-    }
+    .pause-icon svg { width: 22px; height: 22px; fill: #fff; }
 
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
-      .music-btn { bottom: calc(24px + env(safe-area-inset-bottom)); }
+      .music-btn { bottom: calc(26px + env(safe-area-inset-bottom)); }
+    }
+
+    /* Respect users who prefer less motion */
+    @media (prefers-reduced-motion: reduce) {
+      .bg-stripes { animation: none; }
+      .marquee span { animation: none; padding-left: 0; }
+      .portrait { animation: none; }
+      .stars { animation: none; opacity: 1; }
+      .sparkle { animation: none; }
+      .eq-bars span { animation: none; }
     }
   </style>
 </head>
 <body>
 
-  <div class="bg"></div>
-  <div class="vignette"></div>
-  <canvas id="particles"></canvas>
+  <div class="bg-stripes" aria-hidden="true"></div>
 
-  <div class="center">
-    <div class="main-text" id="mainText"></div>
-    <div class="divider"></div>
+  <div class="frame">
+    <div class="marquee"><span>★ ДОБРО ПОЖАЛОВАТЬ НА МОЮ СТРАНИЦУ ★ ПОДПИШИСЬ ★ ПРИВЕТ МИРУ ★ 2026 ★ ВСЕМ ПИСС ★ XOXO ★</span></div>
 
-    <a class="tg-btn" href="https://t.me/solllace_1" target="_blank" rel="noopener">
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="24" cy="24" r="24" fill="#29B6F6"/>
-        <path d="M10.5 23.5L37 13L28.5 36L22 28.5L10.5 23.5Z" fill="white"/>
-        <path d="M22 28.5L26 25L33 18" stroke="#29B6F6" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M22 28.5V35L25.5 31" fill="white"/>
-      </svg>
-      Написать мне
-    </a>
+    <canvas id="particles" aria-hidden="true"></canvas>
+
+    <main class="center">
+      <div class="portrait" aria-hidden="true"></div>
+      <div class="stars" aria-hidden="true">✧ ✦ ☆ ✦ ✧</div>
+      <h1 class="main-text" id="mainText">всем пиСС<small>мои подписчики</small></h1>
+
+      <a class="tg-btn" href="https://t.me/solllace_1" target="_blank" rel="noopener">→ Написать мне ←</a>
+
+      <div class="hits" aria-label="Счётчик посещений">VISITORS: 00013337</div>
+    </main>
+
+    <div class="marquee"><span>♥ best viewed in internet explorer 6 ♥ made with love ♥ 640×480 ♥ please sign my guestbook ♥</span></div>
+
+    <div class="sparkle" style="top:12%;left:8%;">✨</div>
+    <div class="sparkle" style="top:22%;right:10%;animation-delay:.5s;">⭐</div>
+    <div class="sparkle" style="bottom:24%;left:14%;animation-delay:1s;">✨</div>
+    <div class="sparkle" style="bottom:14%;right:8%;animation-delay:1.5s;">💫</div>
   </div>
 
-  <button class="music-btn paused" id="musicBtn" aria-label="Музыка">
+  <button class="music-btn paused" id="musicBtn" aria-label="Включить музыку" aria-pressed="false">
     <div class="eq-bars">
       <span></span><span></span><span></span><span></span>
     </div>
@@ -252,110 +335,91 @@
     </div>
   </button>
 
-  <audio id="bg-audio" src="glamur.mp3" preload="auto" loop></audio>
+  <audio id="bg-audio" src="glamur.mp3" preload="none" loop></audio>
 
   <script>
-    /* ── Letter animation ── */
-    const lines = ['Всем писс', 'мои подпищики'];
-    const container = document.getElementById('mainText');
-    let delay = 0.1;
-
-    lines.forEach((line, li) => {
-      const lineEl = document.createElement('span');
-      lineEl.className = 'line';
-
-      [...line].forEach(ch => {
-        if (ch === ' ') {
-          const sp = document.createElement('span');
-          sp.style.display = 'inline-block';
-          sp.style.width = '0.3em';
-          lineEl.appendChild(sp);
-        } else {
-          const span = document.createElement('span');
-          span.className = 'letter';
-          span.textContent = ch;
-          span.style.animationDelay = delay + 's';
-          delay += 0.065;
-          lineEl.appendChild(span);
-        }
-      });
-
-      container.appendChild(lineEl);
-      if (li < lines.length - 1) delay += 0.2;
-    });
-
-    /* ── Petals ── */
+    /* ── Floating star particles (Y2K version of the petals) ── */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     let W, H;
 
     function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
     }
     resize();
     window.addEventListener('resize', resize);
 
-    const COLORS = [
-      'rgba(255,182,193,',
-      'rgba(255,150,170,',
-      'rgba(255,210,220,',
-      'rgba(255,230,240,',
-      'rgba(255,245,248,',
-    ];
+    const COLORS = ['#ffff66', '#ff00cc', '#00ffe7', '#ffffff'];
 
-    const COUNT = 55;
-    const petals = [];
+    // Scale particle count with viewport to save battery on small devices
+    const COUNT = window.innerWidth < 640 ? 18
+                : window.innerWidth < 1024 ? 28
+                : 40;
+    const particles = [];
 
-    function mkPetal(spreadY) {
+    function mk(spread) {
       return {
         x:      Math.random() * W,
-        y:      spreadY ? Math.random() * H : -20 - Math.random() * 60,
-        w:      Math.random() * 10 + 6,
-        h:      Math.random() * 6 + 4,
-        vy:     Math.random() * 1.0 + 0.4,
-        vx:     (Math.random() - 0.5) * 0.8,
+        y:      spread ? Math.random() * H : -20 - Math.random() * 60,
+        r:      3 + Math.random() * 4,
+        vy:     0.3 + Math.random() * 0.9,
+        vx:     (Math.random() - 0.5) * 0.6,
         rot:    Math.random() * Math.PI * 2,
-        rotV:   (Math.random() - 0.5) * 0.04,
+        rotV:   (Math.random() - 0.5) * 0.05,
         swing:  Math.random() * Math.PI * 2,
-        swingS: 0.012 + Math.random() * 0.015,
-        swingA: 0.6 + Math.random() * 1.2,
-        alpha:  Math.random() * 0.5 + 0.35,
+        swingS: 0.01 + Math.random() * 0.015,
+        swingA: 0.5 + Math.random() * 1.2,
+        alpha:  0.4 + Math.random() * 0.5,
         color:  COLORS[Math.floor(Math.random() * COLORS.length)]
       };
     }
 
-    for (let i = 0; i < COUNT; i++) petals.push(mkPetal(true));
+    for (let i = 0; i < COUNT; i++) particles.push(mk(true));
 
-    function drawPetal(p) {
+    /* A 4-point sparkle shape (+ diamond) — unmistakably Y2K */
+    function drawSparkle(p) {
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot);
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
       ctx.beginPath();
-      ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + p.alpha + ')'; 
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(-p.w * 0.1, -p.h * 0.15, p.w * 0.18, p.h * 0.22, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      const r = p.r, r2 = r * 0.35;
+      ctx.moveTo(0, -r);
+      ctx.lineTo(r2, -r2);
+      ctx.lineTo(r, 0);
+      ctx.lineTo(r2, r2);
+      ctx.lineTo(0, r);
+      ctx.lineTo(-r2, r2);
+      ctx.lineTo(-r, 0);
+      ctx.lineTo(-r2, -r2);
+      ctx.closePath();
       ctx.fill();
       ctx.restore();
     }
 
-    (function loop() {
-      ctx.clearRect(0, 0, W, H);
-      petals.forEach(p => {
-        p.swing += p.swingS;
-        p.x  += p.vx + Math.sin(p.swing) * p.swingA;
-        p.y  += p.vy;
-        p.rot += p.rotV;
-        drawPetal(p);
-        if (p.y > H + 20) Object.assign(p, mkPetal(false));
-      });
-      requestAnimationFrame(loop);
-    })();
+    if (prefersReducedMotion) {
+      // Static snapshot for users who prefer reduced motion
+      particles.forEach(drawSparkle);
+    } else {
+      (function loop() {
+        if (document.hidden) { requestAnimationFrame(loop); return; }
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+          p.swing += p.swingS;
+          p.x  += p.vx + Math.sin(p.swing) * p.swingA;
+          p.y  += p.vy;
+          p.rot += p.rotV;
+          drawSparkle(p);
+          if (p.y > H + 20) Object.assign(p, mk(false));
+        });
+        requestAnimationFrame(loop);
+      })();
+    }
 
-    /* ── Audio ── */
+    /* ── Audio: start only on user interaction (browsers block autoplay anyway) ── */
     const audio = document.getElementById('bg-audio');
     const btn   = document.getElementById('musicBtn');
     audio.volume = 0.55;
@@ -364,23 +428,26 @@
     function setPlaying(val) {
       playing = val;
       btn.classList.toggle('paused', !val);
-    }
-
-    function tryPlay() {
-      audio.play().then(() => setPlaying(true)).catch(() => {
-        const start = () => { if (!playing) audio.play().then(() => setPlaying(true)); };
-        document.addEventListener('touchstart', start, { once: true });
-        document.addEventListener('click',      start, { once: true });
-      });
+      btn.setAttribute('aria-pressed', String(val));
+      btn.setAttribute('aria-label', val ? 'Выключить музыку' : 'Включить музыку');
     }
 
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      if (playing) { audio.pause(); setPlaying(false); }
-      else         { audio.play().then(() => setPlaying(true)); }
+      if (playing) {
+        audio.pause();
+        setPlaying(false);
+      } else {
+        audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      }
     });
 
-    window.addEventListener('load', tryPlay);
+    /* ── PWA: register service worker for offline / installable support ── */
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => { /* first-visit offline is fine */ });
+      });
+    }
   </script>
 
 </body>
